@@ -39,6 +39,15 @@ const UserSchema = new mongoose.Schema({
 
 const User = mongoose.model("User", UserSchema);
 
+const UserValidate = (obj) => {
+    const schema = joi.object({
+        name: joi.string().required(),
+        email: joi.string().email().required(),
+        password: joi.string().min(8).required(),
+    })
+    return schema.validate(obj);
+}
+
 const UserUpdateValidate = (obj) => {
     const schema = joi.object({
         name: joi.string(),
@@ -59,6 +68,7 @@ const UserLogin = (obj) => {
 
 module.exports = {
     User,
+    UserValidate,
     UserUpdateValidate,
     UserLogin
 }

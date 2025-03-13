@@ -9,13 +9,14 @@ require('dotenv').config()
 connectDB()
 
 // Middleware
+
 app.use(express.json()) 
 app.use(cors())
 
 // Routes
 
 app.get('/', (req, res) => {    
-    res.send('Hello World!')
+    res.send('Hello World in Green Api')
 })
 
 app.use("/api/flower" , require('./routes/FlowerRoute'))
