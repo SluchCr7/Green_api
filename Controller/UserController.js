@@ -9,35 +9,24 @@ const bcrypt = require('bcrypt')
  * @access Public
  */
 
-// const RegisterNewUser = asyncHandler(async (req, res) => {
-const RegisterNewUser = async (req, res) => {
-  try {
-    console.log("Register API Called", req.body);
-
-    const { name, email, password } = req.body;
-
-    if (!name || !email || !password) {
-      return res.status(400).json({ message: "All fields are required" });
+const RegisterNewUser = asyncHandler(async (req, res) => {
+    const { error } = UserValidate(req.body)
+    if (error) {
+        return res.status(400).json({message : error.details[0].message})
     }
-
-    const existingUser = await User.findOne({ email });
-    if (existingUser) {
-      return res.status(400).json({ message: "User already exists" });
-    }
-
-    const hashedPassword = await bcrypt.hash(password, 10);
-    const user = new User({ name, email, password: hashedPassword });
-
-    await user.save();
-    console.log("User Registered Successfully");
-
-    res.status(201).json({ message: "User registered successfully" });
-
-  } catch (error) {
-    console.error("Register API Error:", error);
-    res.status(500).json({ message: "Internal Server Error" });
-  }
-};
+    const userExist = await User.findOne({ email: req.body.email })
+    if (userExist) return res.status(400).send("User already exists");
+    
+    const salt = await bcrypt.genSalt(10);
+    const hashPassword = await bcrypt.hash(req.body.password, salt)
+    const user = new User({
+        name: req.body.name,
+        email: req.body.email,
+        password: hashPassword,
+    })
+    await user.save()
+    res.status(201).json({ message: "User Created Successfully" });
+})
 
 /**
  * @desc Login
