@@ -16,7 +16,7 @@ const FlowerSchema = new mongoose.Schema({
         required: true,
     },
     water: {
-        type: String,
+        type: Number,
         required : true
     },
     daysBetweenWater: {

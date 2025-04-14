@@ -68,7 +68,8 @@ const CreateNewFlower = async (req, res) => {
 
         let image = req.files.image;
         
-        // Handle cases where `image` might be an array
+        // Handle cases where `image` might
+        //  be an array
         if (Array.isArray(image)) {
             image = image[0]; // Get the first image
         }

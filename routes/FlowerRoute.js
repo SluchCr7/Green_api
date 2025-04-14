@@ -7,6 +7,4 @@ route.route('/:id')
 route.route("/")
     .get(getAllFLowers)
     .post(photoUpload.fields([{ name: 'image', maxCount: 1 }]) , CreateNewFlower)
-
-
 module.exports = route
