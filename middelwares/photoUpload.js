@@ -1,6 +1,6 @@
 const path = require("path")
 const multer = require("multer")
-
+const fs = require('fs')
 
 const photoStorage = multer.diskStorage({
     destination: function(req,file,cb){
@@ -8,9 +8,10 @@ const photoStorage = multer.diskStorage({
     },
     filename: function(req,file,cb){
         if (file) {
-            cb(null, new Date().toISOString().replace(/:/g, '-') + file.originalname)
+            const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+            cb(null, `${timestamp}-${file.originalname}`);
         } else {
-            cb(null, false)
+            cb(null, false);
         }
     }
 })
